@@ -118,6 +118,94 @@ That also explains our missing-return-route exercise: the request had a way out,
 
 The trace shows `192.168.20.1` -> `10.0.0.2` -> `192.168.120.10`. That's our two routers and the destination. Two computers talking, with quite a bit happening in between.
 
+## Why are we manually assigning IP addresses like this?
+
+Why do we do something so barbaric as manually configuring a static IP address?? We did that to understand how addresses, subnets, and gateways fit together, because it's important to know. But for everyday client devices, there's usually a less boring way.
+
+Let me introduce you to **DHCP — Dynamic Host Configuration Protocol**. DHCP automates assigning IP addresses and other settings, like the subnet mask, default gateway, and DNS servers. That's why it's there: to do it for you. Static addresses still have their place for infrastructure, and DHCP reservations can give devices consistent addresses too.
+
+Large organizations can use dedicated DHCP servers, like I've demonstrated in my [enterprise lab environment](https://github.com/kfisch94/enterprise-infrastructure-lab). For a typical initial IPv4 lease, remember **DORA**:
+
+| Step | What's happening | Basically... |
+| --- | --- | --- |
+| Discover | Client looks for DHCP servers. | "Anyone got an address for me?" |
+| Offer | A server offers an address and settings. | "You can use this one." |
+| Request | Client requests the offered address and identifies its chosen server. | "Sure, I'll take that address." |
+| Acknowledge | Server confirms the lease and settings. | "It's yours for this lease period." |
+
+That's **Discover, Offer, Request, Acknowledge**. The address is leased, and the client normally renews it later. [DHCP protocol reference](https://www.rfc-editor.org/rfc/rfc2131).
+
+![Reference topology showing a DHCP server serving multiple clients through a switch](references/dhcp-topology-reference.png)
+
+*Reference illustration supplied for this explanation. DHCP wasn't added to the completed two-site branch lab; its tested endpoints use static IPv4 addresses.*
+
+## Okay, which computer... and which program?
+
+Now let me direct our small attention spans onto two main things: **getting traffic to the right computer, then getting it to the right application**.
+
+| Field | What to keep in mind |
+| --- | --- |
+| Source MAC | Ethernet sender on the current link. |
+| Destination MAC | Ethernet recipient on that link: the local destination or next-hop router. |
+| Source IP | Where this IP packet came from. |
+| Destination IP | Where this IP packet is headed. |
+
+The MAC addresses change at router hops. The source and destination IP addresses stay the same in our branch lab because we aren't using NAT.
+
+But when traffic reaches that computer, how does it know which program should receive it? This is where **TCP and UDP ports** come in. The operating system uses the transport protocol, addresses, and port numbers to associate traffic with a socket. A server might listen on TCP port 443, while the client uses a temporary source port so replies reach the right connection. Our earlier ICMP ping doesn't use TCP or UDP ports.
+
+## TCP: "Yo, what's up?"
+
+Understanding TCP means understanding the **three-way handshake**. Basically, the client goes to the server and says:
+
+> Client, **SYN**: "Yo, what's up?"
+>
+> Server, **SYN-ACK**: "Hey, what's up?"
+>
+> Client, **ACK**: "Nothing much, let's talk."
+
+Voila, the TCP connection is established. The handshake synchronizes sequence numbers; the dialogue is just my way of remembering it.
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant S as Server
+    C->>S: SYN - Yo, what's up?
+    S->>C: SYN-ACK - Hey, what's up?
+    C->>S: ACK - Nothing much, let's talk.
+    Note over C,S: TCP connection established
+```
+
+If data goes missing, TCP retransmits it, subject to timeouts and connection failure. If segments arrive out of order, TCP delivers a correctly ordered **byte stream** to the application. It doesn't have to wait for an entire file before delivering available, in-order bytes. [TCP protocol reference](https://www.rfc-editor.org/rfc/rfc9293).
+
+### TCP isn't encryption
+
+TCP itself isn't encrypted. With HTTPS over TCP, **TLS — Transport Layer Security —** sits above TCP to protect the application data in transit. Someone watching the network can't normally read that encrypted content, but the traffic isn't invisible: IP addresses, ports, timing, and packet sizes can still be visible. [TLS 1.3 reference](https://www.rfc-editor.org/rfc/rfc8446).
+
+![Simplified reference illustration of TCP establishment followed by a TLS handshake](references/tcp-tls-reference.png)
+
+*Conceptual reference, not a capture or timing measurement from my lab. The TCP portion is condensed and doesn't draw all three handshake messages separately. Its millisecond values are illustrative.*
+
+One wrinkle: HTTPS can also use HTTP/3 over QUIC, which runs over UDP. So HTTPS doesn't always mean TCP. [HTTP/3 reference](https://www.rfc-editor.org/rfc/rfc9114).
+
+## UDP: send it and see
+
+UDP, however, doesn't check whether the recipient is ready or even exists before sending. No TCP-style connection handshake. It's a minimal, connectionless transport: **UDP itself** doesn't guarantee delivery, ordering, or retransmission. An application can add those things if it needs them. [UDP protocol reference](https://www.rfc-editor.org/rfc/rfc768).
+
+![Example of an application sending a request and response using UDP](references/udp-reference.png)
+
+*A UDP application can send a response, as shown here. That response is application behavior, not a guaranteed UDP acknowledgment. UDP by itself doesn't encrypt the data either.*
+
+## From banging rocks together to this
+
+Obviously there's a bunch of stuff I didn't mention, like switching centers and deep-sea routing cables. I just want to know: how did we bang a couple of rocks together thousands of years ago and end up with this?? I have no idea. It's best not to think about it!
+
+I've tried three Packet Tracer labs and completed one so far. Some of them are actually pretty hard, especially when you're on your own figuring out what broke. For this completed branch lab, I worked through the configuration and troubleshooting with guidance, then verified the results shown here.
+
+I'd recommend trying one or two if you're getting into networking or network maintenance. Completing one properly, understanding the traffic, and explaining the fixes gave me more to talk about than just connecting devices until the lines went green.
+
+The [PPechmann practice labs](https://github.com/PPechmann/Packet-Tracer-Practice-Labs) are where this project's starter topology came from. My completed example is documented above, with the working files, configs, and test results included.
+
 ## Source and credit
 
 [PPechmann Packet Tracer Practice Labs](https://github.com/PPechmann/Packet-Tracer-Practice-Labs). Copyright (c) 2025 PPechmann; original MIT license retained in `upstream/LICENSE`. The original solution file was not consulted.
