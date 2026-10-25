@@ -36,13 +36,43 @@ DHCP and ACLs were not implemented in this exercise. VLAN membership separates l
 
 ## Getting used to the Cisco CLI
 
-The first lesson was figuring out which mode I was in. `enable` gets me to privileged EXEC mode, then `configure terminal` opens configuration mode, and selecting an interface puts me in `(config-if)#`. Apparently one prompt was not enough.
+Only Cisco would complicate the several layers of "EXEC modes," haha. But if you ever get lost, the question mark provides some commands.
 
-The question mark became a useful shortcut: `?` shows the commands available in the current context. Checking the prompt first also explained why a command that worked a minute ago suddenly came back as invalid.
+![Entering privileged EXEC mode with enable](references/cli-enable.png)
 
-Then there was bringing up a router interface. The command is `no shutdown`. Fair enough: it removes the shutdown setting. Still, my first instinct was to try `enable`. Seeing the link turn green was satisfying, but this lab made the next lesson clear: a green link does not prove the VLAN, gateway, or return route is right.
+![Using the question mark to see available EXEC commands](references/cli-question-mark.png)
 
-Cisco is common enough in networking that getting comfortable with these modes is useful. After a few rounds of configuring, breaking, and fixing the network, the prompts started to make more sense.
+Now we are gonna enter a new mode, "Configuration Mode." Why can't everything just be in this privileged mode? I don't know... There's also config-if mode and config-router mode and config-line mode. I don't know, you just have to deal with it. Because in the IT world, it feels like **EVERYONE USES CISCO...**
+
+![Entering configuration mode with configure terminal](references/cli-config-mode.png)
+
+### Why learn Cisco?
+
+![Cisco leads the installed switch base in the supplied Netherlands chart](references/cisco-switch-installed-base-2018.png)
+
+*Chart credit: Computer Profile / Smart Profile, April 2018. Cisco accounted for 54.5% of the inventoried switches in this study of Dutch organizations with more than 50 employees. This is a historical Netherlands snapshot, not a current worldwide market-share figure. [Original research and context](https://smartprofile.io/analytics-papers/ciscos-share-in-networking-equipment-continues-to-decline/).*
+
+Oh, and router configuration. Great, another new mode... To enable an interface, guess what? You'd think it would be `enable`. **NO! It's `no shutdown`.** I don't know what genius thought of that... but whatever, a green line is a good sign!
+
+![Selecting a router interface enters config-if mode](references/cli-interface-mode.png)
+
+*The small CLI images above are supplied reference screenshots. The topology and test screenshots below are from my completed Packet Tracer lab.*
+
+## Seeing it work
+
+The green links were a good start. Then came checking the VLANs, routes, and actual traffic.
+
+![SW1 trunk carrying VLANs 10, 20, and 30](evidence/20-trunk-forwarding-restored.png)
+
+The trunk is forwarding all three VLANs between the switch and router.
+
+![Restored return route on R2](evidence/24-return-route-restored.png)
+
+R2 has the route back to Site A Sales again. That return path was the difference between a working local gateway and a failed cross-site ping.
+
+![Successful cross-site ping and trace after restoring the route](evidence/25-return-route-recovery.png)
+
+Four replies, no packet loss, and the expected path through R1 and R2 to PC3. Full failure and recovery screenshots are linked in the [troubleshooting cases](docs/troubleshooting.md).
 
 ## Source and credit
 
