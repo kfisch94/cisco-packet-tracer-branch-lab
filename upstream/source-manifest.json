@@ -1,0 +1,19 @@
+{
+  "retrieved": "2026-10-25",
+  "author": "PPechmann",
+  "repository": "https://github.com/PPechmann/Packet-Tracer-Practice-Labs",
+  "files": [
+    {
+      "source": "https://raw.githubusercontent.com/PPechmann/Packet-Tracer-Practice-Labs/main/Branch%20Network%20Lab%3A%20VLANs%2C%20Trunks%2C%20Router-on-a-Stick%2C%20and%20Static%20Routes-start.pkt",
+      "file": "upstream/branch-network-start.pkt",
+      "bytes": 84148,
+      "sha256": "2c1d9cb2b6d6218e0473411e7d380f4e6c8fd5203f5edfe03d703051457b0c2d"
+    },
+    {
+      "source": "https://raw.githubusercontent.com/PPechmann/Packet-Tracer-Practice-Labs/main/LICENSE",
+      "file": "upstream/LICENSE",
+      "bytes": 1066,
+      "sha256": "451617fa2a3f8f0e00beaa66cd6950f75590f1264a5198562423b8a30f45d551"
+    }
+  ]
+}
