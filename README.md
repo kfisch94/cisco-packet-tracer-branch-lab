@@ -200,7 +200,7 @@ UDP, however, doesn't check whether the recipient is ready or even exists before
 
 Obviously there's a bunch of stuff I didn't mention, like switching centers and deep-sea routing cables. I just want to know: how did we bang a couple of rocks together thousands of years ago and end up with this?? I have no idea. It's best not to think about it!
 
-I've tried three Packet Tracer labs and completed one so far. Some of them are actually pretty hard, especially when you're on your own figuring out what broke. For this completed branch lab, I worked through the configuration and troubleshooting with guidance, then verified the results shown here.
+I've tried several of the Advanced Packet Tracer labs and completed one so far. Some of them are actually pretty hard, especially when you're on your own figuring out what broke. For this completed branch lab, I worked through the configuration and troubleshooting with guidance, then verified the results shown here.
 
 I'd recommend trying one or two if you're getting into networking or network maintenance. Completing one properly, understanding the traffic, and explaining the fixes gave me more to talk about than just connecting devices until the lines went green.
 
