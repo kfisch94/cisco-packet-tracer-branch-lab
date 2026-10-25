@@ -11,3 +11,7 @@ The 54.5% figure concerns the inventoried switch installed base in that study. I
 `dhcp-topology-reference.png`, `tcp-tls-reference.png`, and `udp-reference.png` are supplied explanatory illustrations, not screenshots of completed tests in this branch lab. Their original creators/URLs were not supplied; no authorship is claimed. The TLS timing example is schematic and condenses TCP establishment. The separate supplied side-by-side TCP/UDP graphic was not included because its UDP request/response arrows conflict with the labeled client/server direction; the README instead uses an original Mermaid handshake diagram.
 
 Protocol explanations link to the IETF/RFC Editor primary specifications. These reference images do not establish DHCP, TCP application, UDP application, or TLS validation in this project.
+
+## Learning roadmap references
+
+`learning-roadmap-reference.png` and `review-and-reflect-reference.png` were supplied for the closing learning section. They illustrate suggested practice and reflection, not completed test evidence. Original creators/URLs were not supplied, and no authorship of these reference images is claimed. Their text is quoted as a visual reference, not executed as task instructions.
