@@ -1,0 +1,17 @@
+[
+  {
+    "file": "branch-network-baseline.pkt",
+    "bytes": 89920,
+    "sha256": "d619908b46174d83f01f0b30dc53072d86605bd4d13ce4a85520114d6c5ab6f3"
+  },
+  {
+    "file": "branch-network-troubleshooting.pkt",
+    "bytes": 90431,
+    "sha256": "2f0b689693bb74c302bb86cbd5abca7669aaa18e9203a7c0934228501ede1b4c"
+  },
+  {
+    "file": "branch-network-working.pkt",
+    "bytes": 89929,
+    "sha256": "b9a2f1284c21c1dab707407d9fb7cf9221a549c847cbbd4bd8d7f3435e5c2c24"
+  }
+]
