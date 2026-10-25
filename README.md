@@ -74,6 +74,50 @@ R2 has the route back to Site A Sales again. That return path was the difference
 
 Four replies, no packet loss, and the expected path through R1 and R2 to PC3. Full failure and recovery screenshots are linked in the [troubleshooting cases](docs/troubleshooting.md).
 
+## Okay, but how did that actually work?
+
+Congratulations, you made two computers communicate across two separate networks. You probably have a lot of questions about that... But that's good. It means you have a curiosity about stuff, and curiosity sparks the desire to learn.
+
+Let's start with the basics. How did Computer A ping Computer B? What is a ping? How does Computer A decide where to send it?
+
+### First, what is a ping?
+
+A ping sends an **ICMP Echo Request**. If the destination receives it and responds, it sends an **ICMP Echo Reply** back. It's basically, "Yo, can you hear me?" followed by, "Yep, I'm here." It tests whether that ICMP traffic can make the round trip. It doesn't prove every app or service works.
+
+### How does Computer A know where to send it?
+
+In this lab, PC1 is `192.168.20.10/24`, and PC3 is `192.168.120.10/24`. PC1 uses its subnet mask to work out whether the destination is on its local network. PC3 isn't, so PC1 sends the traffic to its default gateway, `192.168.20.1`.
+
+But Ethernet needs a **MAC address** for the next local hop. That's where **ARP — Address Resolution Protocol —** comes in. If PC1 doesn't already have the gateway's MAC address cached, the conversation is basically:
+
+> PC1: "Yo, whose IP address is 192.168.20.1?"
+>
+> R1: "Yo, I'm 192.168.20.1. Here's my MAC address."
+>
+> PC1: "Thumbs up... lol."
+
+That's the ARP exchange, not the ping itself. The request is broadcast within PC1's VLAN, and the gateway normally replies directly to PC1. ARP doesn't shout across both sites looking for PC3.
+
+For a destination on the same subnet, PC1 would ARP for that destination directly instead of its gateway.
+
+### Then the routers take over
+
+PC1 puts the ping packet inside an Ethernet frame addressed to R1's MAC address. The packet's destination IP is still **PC3's IP**, not the gateway's.
+
+1. SW1 carries the frame from PC1's access port over the VLAN 20 trunk to R1.
+2. R1 checks its routing table. Its static route says to reach `192.168.120.0/24` through R2 at `10.0.0.2`.
+3. R1 sends the packet in a new Ethernet frame toward R2, using ARP if it needs R2's MAC address.
+4. R2 sees that PC3's subnet is directly connected through its VLAN 20 subinterface. It resolves PC3's MAC address if needed and forwards the packet through SW2.
+5. PC3 receives the Echo Request and sends an Echo Reply back through its gateway. Both routers need the right routes for that reply to get back to PC1.
+
+The IP source and destination stay the same on the request's journey in this lab because we aren't using NAT. Ethernet MAC addresses change at the router hops, and each router reduces the packet's **TTL — Time to Live**.
+
+That also explains our missing-return-route exercise: the request had a way out, but the reply didn't have a route back. A green line alone couldn't tell us that.
+
+![PC1 ping and trace showing the path through both routers to PC3](evidence/25-return-route-recovery.png)
+
+The trace shows `192.168.20.1` -> `10.0.0.2` -> `192.168.120.10`. That's our two routers and the destination. Two computers talking, with quite a bit happening in between.
+
 ## Source and credit
 
 [PPechmann Packet Tracer Practice Labs](https://github.com/PPechmann/Packet-Tracer-Practice-Labs). Copyright (c) 2025 PPechmann; original MIT license retained in `upstream/LICENSE`. The original solution file was not consulted.
