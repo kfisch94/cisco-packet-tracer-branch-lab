@@ -200,11 +200,35 @@ UDP, however, doesn't check whether the recipient is ready or even exists before
 
 Obviously there's a bunch of stuff I didn't mention, like switching centers and deep-sea routing cables. I just want to know: how did we bang a couple of rocks together thousands of years ago and end up with this?? I have no idea. It's best not to think about it!
 
-I've tried several of the Advanced Packet Tracer labs and completed one so far. Some of them are actually pretty hard, especially when you're on your own figuring out what broke. For this completed branch lab, I worked through the configuration and troubleshooting with guidance, then verified the results shown here.
+I've tried three Packet Tracer labs and completed one so far. Some of them are actually pretty hard, especially when you're on your own figuring out what broke. For this completed branch lab, I worked through the configuration and troubleshooting with guidance, then verified the results shown here.
 
 I'd recommend trying one or two if you're getting into networking or network maintenance. Completing one properly, understanding the traffic, and explaining the fixes gave me more to talk about than just connecting devices until the lines went green.
 
 The [PPechmann practice labs](https://github.com/PPechmann/Packet-Tracer-Practice-Labs) are where this project's starter topology came from. My completed example is documented above, with the working files, configs, and test results included.
+
+## Keep learning, keep skill maxing
+
+Okay, that's it. You should now have enough of a networking foundation to start exploring things like self-hosting, homelabbing, and cybersecurity stuff. There's still plenty to learn, but you've got somewhere to start.
+
+If you want to learn more, give yourself a goal and throw yourself into it without knowing every step in advance. Get stuck. Pay attention to exactly how you got stuck. Break things in your lab, fix them, and explain what happened. I promise you'll learn a lot more than just watching somebody else do it. Classrooms, textbooks, and YouTube can help, but you still have to get your hands on the thing.
+
+Hopefully this is a bit of a roadmap for those networking majors and network security folks who need some direction. I've utilized several tools and learning environments, including homelabs with [Kali Linux](https://www.kali.org/docs/introduction/what-is-kali-linux/), [Kioptrix](https://www.vulnhub.com/entry/kioptrix-level-1-1,22/), [Hack The Box](https://www.hackthebox.com/), and [TryHackMe](https://tryhackme.com/).
+
+Quick distinction: Kali is the security-testing Linux distribution; Kioptrix is a separate, deliberately vulnerable practice VM. Kali comes with lots of tools already included if you don't feel like setting them all up individually. Keep vulnerable targets in an isolated lab and practice on systems you own or have permission to test.
+
+Interactive security labs and learning portals can help teach the fundamentals and keep cybersecurity exciting. Though sifting through logs can be debilitating!!! Finding the line that finally explains what broke makes it worth it.
+
+### Give yourself a goal
+
+![Suggested networking practice roadmap: identify local settings, observe ARP, use ping and traceroute, try Packet Tracer and Wireshark, and host a local webpage](references/learning-roadmap-reference.png)
+
+*Supplied roadmap reference: ideas to explore next, rather than a checklist of everything completed in this repository. The wireless exercise refers to your own lab network; it is separate from this Packet Tracer project.*
+
+![Review your notes, summarize what you learned, and appreciate how far you came](references/review-and-reflect-reference.png)
+
+Learning can be fun. Don't rely only on classroom lectures. Explore, experiment, keep skill maxing! Our potential is endless in Information Technology. **#BeSomebody.**
+
+The fact that I learned and you learned is a win. Thank you.
 
 ## Source and credit
 
